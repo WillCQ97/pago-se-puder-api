@@ -25,7 +25,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
 	@Override
 	public Funcionario getFuncionario(long id) {
-		return funcionarioRepository.findById(id).orElseThrow( () -> new ResourceNotFoundException("Funcionário não encontrado."));
+		return funcionarioRepository
+				.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado."));
 	}
 
 	@Override

@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.boot.context.properties.bind.DefaultValue;
+
 @Entity
 @Table(name = "funcionarios")
 public class Funcionario implements Comparable<Funcionario>, Serializable {
@@ -30,21 +32,12 @@ public class Funcionario implements Comparable<Funcionario>, Serializable {
 	
 	private int qtdFaltas;
 	
-	
 	public Funcionario() {
 	}
 	
-	public Funcionario(Long id, String nome, String cargo) {
-		super();
-		this.idFuncionario = id;
-		this.nome = nome;
-		this.cargo = cargo;
-	}
-	
-	public Funcionario(Long id, @NotNull(message = "O nome é necessário.") String nome,
+	public Funcionario(@NotNull(message = "O nome é necessário.") String nome,
 			@NotNull(message = "O cargo é requerido.") String cargo, int idade, int qtdFaltas) {
 		super();
-		this.idFuncionario = id;
 		this.nome = nome;
 		this.cargo = cargo;
 		this.idade = idade;
