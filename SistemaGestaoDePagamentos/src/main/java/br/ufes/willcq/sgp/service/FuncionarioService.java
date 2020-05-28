@@ -11,6 +11,10 @@ public interface FuncionarioService {
 	
 	public Funcionario getFuncionario(long id);
 	
-	public Funcionario save(Funcionario funcionario);
+	public Funcionario salvar(Funcionario funcionario);
+	
+	public Funcionario atualizar(long id, Funcionario funcionario);
+	
+	public Funcionario remover(long id);
 	
 }

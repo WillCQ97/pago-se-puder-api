@@ -31,8 +31,32 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	}
 
 	@Override
-	public Funcionario save(Funcionario funcionario) {
+	public Funcionario salvar(Funcionario funcionario) {
 		return funcionarioRepository.save(funcionario);
 	}
-		
+	
+	/**
+	 * corrija-me por favor 
+	 */
+	@Override
+	public Funcionario atualizar(long id, Funcionario funcionario) {
+		Funcionario f = funcionarioRepository.findById(id).get();
+		f.setNome(funcionario.getNome());
+		f.setCargo(funcionario.getCargo());
+		f.setQtdFaltas(funcionario.getQtdFaltas());
+		f.setIdade(funcionario.getIdade());
+		return f;
+	}
+	
+	/**
+	 * corrija-me, e quando o banco não permitir a deleção?
+	 * configurar mensagem de erro (problema com chave estrangeira) 
+	 */
+	@Override
+	public Funcionario remover(long id) {
+		Funcionario f = funcionarioRepository.findById(id).get();
+		funcionarioRepository.deleteById(id);
+		return f;
+	}
+	
 }
