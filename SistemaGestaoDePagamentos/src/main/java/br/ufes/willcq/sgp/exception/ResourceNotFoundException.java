@@ -13,18 +13,18 @@ public class ResourceNotFoundException extends RuntimeException{
 		// TODO Auto-generated constructor stub
 	}
 
-	public ResourceNotFoundException(String message, Throwable cause) {
-		super(message, cause);
+	public ResourceNotFoundException(String mensagem, Throwable causa) {
+		super(mensagem, causa);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ResourceNotFoundException(String message) {
-		super(message);
+	public ResourceNotFoundException(String mensagem) {
+		super(mensagem);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ResourceNotFoundException(Throwable cause) {
-		super(cause);
+	public ResourceNotFoundException(Throwable causa) {
+		super(causa);
 		// TODO Auto-generated constructor stub
 	}
 		
