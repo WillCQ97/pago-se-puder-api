@@ -1,8 +1,5 @@
 package br.ufes.willcq.sgp.service;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +24,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	public Funcionario getFuncionario(long id) {
 		return funcionarioRepository
 				.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado para o id " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Funcionário com id" + id + "não encontrado!"));
 	}
 
 	@Override
@@ -40,9 +37,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 */
 	@Override
 	public Funcionario atualizar(long id, Funcionario detalhesFuncionario) {
-		Funcionario funcionario = funcionarioRepository
-				.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado para o id " + id));
+		Funcionario funcionario = this.getFuncionario(id);
 		
 		funcionario.setNome(detalhesFuncionario.getNome());
 		funcionario.setCargo(detalhesFuncionario.getCargo());
@@ -51,20 +46,11 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 		return funcionario;
 	}
 	
-	/**
-	 * 
-	 */
 	@Override
-	public Map<String, Boolean> remover(long id) {
-		Funcionario funcionario = funcionarioRepository
-				.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Funcionário não encontrado para o id " + id));
-		
+	public String remover(long id) {
+		Funcionario funcionario = this.getFuncionario(id);
 		funcionarioRepository.delete(funcionario);
-		
-		Map<String, Boolean> resposta = new HashMap<>();
-		resposta.put("removido", Boolean.TRUE);
-		return resposta;
+		return "Dados do funcionário de id " + id + " foram removidos.";
 	}
 	
 }

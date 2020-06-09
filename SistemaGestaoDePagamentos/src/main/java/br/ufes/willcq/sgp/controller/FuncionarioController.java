@@ -1,7 +1,5 @@
 package br.ufes.willcq.sgp.controller;
 
-import java.util.Map;
-
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +46,7 @@ public class FuncionarioController {
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Map<String, Boolean>> removerFuncionario(@PathVariable(value = "id") long id) {
+	public ResponseEntity<String> removerFuncionario(@PathVariable(value = "id") long id) {
 		return ResponseEntity.ok(funcionarioService.remover(id));
 	}
 	

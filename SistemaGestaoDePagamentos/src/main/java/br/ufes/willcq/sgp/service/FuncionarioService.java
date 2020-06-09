@@ -1,7 +1,5 @@
 package br.ufes.willcq.sgp.service;
 
-import java.util.Map;
-
 import org.springframework.validation.annotation.Validated;
 
 import br.ufes.willcq.sgp.model.Funcionario;
@@ -17,6 +15,6 @@ public interface FuncionarioService {
 	
 	public Funcionario atualizar(long id, Funcionario funcionario);
 	
-	public Map<String, Boolean> remover(long id);
+	public String remover(long id);
 	
 }
