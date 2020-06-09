@@ -10,8 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.boot.context.properties.bind.DefaultValue;
-
 @Entity
 @Table(name = "funcionarios")
 public class Funcionario implements Comparable<Funcionario>, Serializable {
