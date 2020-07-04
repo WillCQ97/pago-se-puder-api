@@ -14,17 +14,22 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	
 	@Autowired
 	private FuncionarioRepository funcionarioRepository;
-
+	
+	private void verificarFuncionarioCadastrado(Long id) {
+		if(!funcionarioRepository.existsById(id)) {
+			throw new ResourceNotFoundException("Funcionário com id " + id + " não encontrado!");
+		}
+	}
+	
 	@Override
 	public Iterable<Funcionario> getAllFuncionarios() {
 		return funcionarioRepository.findAll();
 	}
 
 	@Override
-	public Funcionario getFuncionario(long id) {
-		return funcionarioRepository
-				.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Funcionário com id" + id + "não encontrado!"));
+	public Funcionario buscar(long id) {
+		this.verificarFuncionarioCadastrado(id);
+		return funcionarioRepository.findById(id).get();
 	}
 
 	@Override
@@ -36,21 +41,17 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 * A atualização deve receber os dados de todos os campos
 	 */
 	@Override
-	public Funcionario atualizar(long id, Funcionario detalhesFuncionario) {
-		Funcionario funcionario = this.getFuncionario(id);
+	public Funcionario atualizar(long id, Funcionario funcionario) {
+		this.verificarFuncionarioCadastrado(id);
+		funcionario.setIdFuncionario(id);
 		
-		funcionario.setNome(detalhesFuncionario.getNome());
-		funcionario.setCargo(detalhesFuncionario.getCargo());
-		funcionario.setQtdFaltas(detalhesFuncionario.getQtdFaltas());
-		funcionario.setIdade(detalhesFuncionario.getIdade());
-		return funcionario;
+		return funcionarioRepository.save(funcionario);
 	}
 	
 	@Override
-	public String remover(long id) {
-		Funcionario funcionario = this.getFuncionario(id);
-		funcionarioRepository.delete(funcionario);
-		return "Dados do funcionário de id " + id + " foram removidos.";
+	public void remover(long id) {
+		this.verificarFuncionarioCadastrado(id);
+		funcionarioRepository.deleteById(id);
 	}
 	
 }

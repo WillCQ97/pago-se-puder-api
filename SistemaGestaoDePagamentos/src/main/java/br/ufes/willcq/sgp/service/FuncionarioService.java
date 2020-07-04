@@ -9,12 +9,12 @@ public interface FuncionarioService {
 	
 	public Iterable<Funcionario> getAllFuncionarios();
 	
-	public Funcionario getFuncionario(long id);
+	public Funcionario buscar(long id);
 	
 	public Funcionario salvar(Funcionario funcionario);
 	
 	public Funcionario atualizar(long id, Funcionario funcionario);
 	
-	public String remover(long id);
+	public void remover(long id);
 	
 }

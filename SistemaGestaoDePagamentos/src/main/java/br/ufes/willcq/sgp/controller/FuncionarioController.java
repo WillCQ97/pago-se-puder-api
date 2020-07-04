@@ -30,24 +30,29 @@ public class FuncionarioController {
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Funcionario> getFuncionario(@PathVariable(value = "id") long id) {
-		return ResponseEntity.ok().body(funcionarioService.getFuncionario(id));
+	public ResponseEntity<Funcionario> getFuncionario(@PathVariable long id) {
+		return ResponseEntity
+				.ok()
+				.body(funcionarioService.buscar(id));
 	}
 	
 	@PostMapping
 	public ResponseEntity<Funcionario> criarFuncionario(@RequestBody Funcionario funcionario) {
-		return ResponseEntity.status(HttpStatus.CREATED).body(funcionarioService.salvar(funcionario));
+		return ResponseEntity
+				.status(HttpStatus.CREATED)
+				.body(funcionarioService.salvar(funcionario));
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<Funcionario> atualizarFuncionario(@PathVariable(value = "id") long id, 
+	public ResponseEntity<Funcionario> atualizarFuncionario(@PathVariable long id, 
 			@RequestBody Funcionario funcionario) {
 		return ResponseEntity.ok(funcionarioService.atualizar(id, funcionario));
 	}
 	
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> removerFuncionario(@PathVariable(value = "id") long id) {
-		return ResponseEntity.ok(funcionarioService.remover(id));
+	public ResponseEntity<Void> removerFuncionario(@PathVariable long id) {
+		funcionarioService.remover(id);
+		return ResponseEntity.ok().build();
 	}
 	
 }
