@@ -1,5 +1,6 @@
 package br.ufes.willcq.sgp.controller;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class FuncionarioController {
 	private FuncionarioService funcionarioService;
 
 	@GetMapping
-	public @NotNull ResponseEntity<Iterable<Funcionario>> getFuncionarios() {
-		return ResponseEntity.ok(funcionarioService.getAllFuncionarios());
+	public @NotNull Iterable<Funcionario> getFuncionarios() {
+		return funcionarioService.getAllFuncionarios();
 	}
 	
 	@GetMapping("/{id}")
@@ -37,7 +38,7 @@ public class FuncionarioController {
 	}
 	
 	@PostMapping
-	public ResponseEntity<Funcionario> criarFuncionario(@RequestBody Funcionario funcionario) {
+	public ResponseEntity<Funcionario> criarFuncionario(@Valid @RequestBody Funcionario funcionario) {
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
 				.body(funcionarioService.salvar(funcionario));
