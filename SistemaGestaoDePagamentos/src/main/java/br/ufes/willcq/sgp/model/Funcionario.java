@@ -8,22 +8,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "funcionarios")
 public class Funcionario implements Comparable<Funcionario>, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -762959886428920284L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long idFuncionario;
 
-	@NotNull(message = "O nome é necessário.")
+	@NotBlank(message = "O nome é necessário.")
 	@Basic(optional = false)
+	@Size(max = 250)
 	private String nome;
 	
-	@NotNull(message = "O cargo é requerido.")
+	@NotBlank(message = "O cargo é requerido.")
 	@Basic(optional = false)
+	@Size(max = 250)
 	private String cargo;
 	
 	private int idade;
@@ -33,8 +41,7 @@ public class Funcionario implements Comparable<Funcionario>, Serializable {
 	public Funcionario() {
 	}
 	
-	public Funcionario(@NotNull(message = "O nome é necessário.") String nome,
-			@NotNull(message = "O cargo é requerido.") String cargo, int idade, int qtdFaltas) {
+	public Funcionario(String nome, String cargo, int idade, int qtdFaltas) {
 		super();
 		this.nome = nome;
 		this.cargo = cargo;

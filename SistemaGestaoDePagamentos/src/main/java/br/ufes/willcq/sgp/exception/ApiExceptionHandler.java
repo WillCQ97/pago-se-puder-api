@@ -1,5 +1,7 @@
 package br.ufes.willcq.sgp.exception;
 
+import java.time.LocalDateTime;
+
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
@@ -15,23 +17,27 @@ public class ApiExceptionHandler {
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<RespostaErro> handle(ConstraintViolationException e) {
 		
-		RespostaErro erros = new RespostaErro();
+		RespostaErro repErros = new RespostaErro();
 		
-		for (ConstraintViolation violation : e.getConstraintViolations()) {
-			ItemErro erro = new ItemErro();
-			erro.setCodigo(violation.getMessageTemplate());
-			erro.setMensagem(violation.getMessage());
-			erros.addError(erro);
+		for (ConstraintViolation cViolation : e.getConstraintViolations()) {
+			ItemErro iErro = new ItemErro();
+			
+			iErro.setCodigo(cViolation.getPropertyPath().toString());
+			iErro.setMensagem(cViolation.getMessage());
+			iErro.setDataHora(LocalDateTime.now());
+			
+			repErros.addError(iErro);
 		}
 		
-		return new ResponseEntity<>(erros, HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<>(repErros, HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(ResourceNotFoundException.class)
 	public ResponseEntity<ItemErro> handle(ResourceNotFoundException e) {
-		ItemErro erro = new ItemErro();
-		erro.setMensagem(e.getMessage());
-		return new ResponseEntity<>(erro, HttpStatus.NOT_FOUND);
+		ItemErro iErro = new ItemErro();
+		iErro.setDataHora(LocalDateTime.now());
+		iErro.setMensagem(e.getMessage());
+		return new ResponseEntity<>(iErro, HttpStatus.NOT_FOUND);
 	}
 	
 }
