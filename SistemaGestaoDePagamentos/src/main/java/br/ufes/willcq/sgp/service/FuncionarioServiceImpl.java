@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import br.ufes.willcq.sgp.exception.NegocioException;
 import br.ufes.willcq.sgp.exception.ResourceNotFoundException;
 import br.ufes.willcq.sgp.model.Funcionario;
 import br.ufes.willcq.sgp.repository.FuncionarioRepository;
@@ -21,6 +22,12 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 		}
 	}
 	
+	private void validarIdade(int idade) {
+		if(idade == 0) {
+			throw new NegocioException("A idade precisa ser informada e diferente de 0.");
+		}
+	}
+	
 	@Override
 	public Iterable<Funcionario> getAllFuncionarios() {
 		return funcionarioRepository.findAll();
@@ -34,6 +41,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
 	@Override
 	public Funcionario salvar(Funcionario funcionario) {
+		this.validarIdade(funcionario.getIdade());
 		return funcionarioRepository.save(funcionario);
 	}
 	
@@ -43,6 +51,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	@Override
 	public Funcionario atualizar(long id, Funcionario funcionario) {
 		this.verificarFuncionarioCadastrado(id);
+		this.validarIdade(funcionario.getIdade());
 		funcionario.setIdFuncionario(id);
 		
 		return funcionarioRepository.save(funcionario);

@@ -4,6 +4,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+@JsonInclude(Include.NON_NULL)
 public class RespostaErro {
 
 	private Integer status;
@@ -13,6 +17,13 @@ public class RespostaErro {
 
 	public RespostaErro() {
 		erros = new ArrayList<>();
+	}
+
+	public RespostaErro(Integer status, LocalDateTime dataHora, String mensagem) {
+		super();
+		this.status = status;
+		this.dataHora = dataHora;
+		this.mensagem = mensagem;
 	}
 
 	public Integer getStatus() {
