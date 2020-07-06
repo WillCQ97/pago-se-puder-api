@@ -1,9 +1,10 @@
 package br.ufes.willcq.sgp.exception;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -19,7 +20,7 @@ public class ApiExceptionHandler {
 		RespostaErro rErro = new RespostaErro();
 
 		rErro.setStatus(status.value());
-		rErro.setDataHora(LocalDateTime.now());
+		rErro.setDataHora(OffsetDateTime.now());
 		rErro.setMensagem(e.getMessage());
 		
 		return new ResponseEntity<>(rErro, status);
@@ -36,7 +37,7 @@ public class ApiExceptionHandler {
 		var status = HttpStatus.BAD_REQUEST;
 		RespostaErro repErros = new RespostaErro();
 		repErros.setStatus(status.value());
-		repErros.setDataHora(LocalDateTime.now());
+		repErros.setDataHora(OffsetDateTime.now());
 		repErros.setMensagem("Um ou mais campos informados são inválidos.");
 
 		for (ObjectError objError : e.getBindingResult().getAllErrors()) {
@@ -55,7 +56,16 @@ public class ApiExceptionHandler {
 	public ResponseEntity<RespostaErro> handleNegocioExcetpion(NegocioException e){
 		var status = HttpStatus.BAD_REQUEST;
 		
-		var resposta = new RespostaErro(status.value(), LocalDateTime.now(), e.getMessage());
+		var resposta = new RespostaErro(status.value(), OffsetDateTime.now(), e.getMessage());
+		return new ResponseEntity<RespostaErro>(resposta, status);
+	}
+	
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity<RespostaErro> handleHttpMessageNotReadableException(HttpMessageNotReadableException e){
+		var status = HttpStatus.BAD_REQUEST;
+		var msg = "Verifique os dados informados estão corretamente formatados.";
+		var resposta = new RespostaErro(status.value(), OffsetDateTime.now(), msg);
+		
 		return new ResponseEntity<RespostaErro>(resposta, status);
 	}
 }

@@ -1,17 +1,17 @@
 package br.ufes.willcq.sgp.exception;
 
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
-@JsonInclude(Include.NON_NULL)
+@JsonInclude(Include.NON_EMPTY)
 public class RespostaErro {
 
 	private Integer status;
-	private LocalDateTime dataHora;
+	private OffsetDateTime dataHora;
 	private String mensagem;
 	private List<ItemErro> erros;
 
@@ -19,7 +19,7 @@ public class RespostaErro {
 		erros = new ArrayList<>();
 	}
 
-	public RespostaErro(Integer status, LocalDateTime dataHora, String mensagem) {
+	public RespostaErro(Integer status, OffsetDateTime dataHora, String mensagem) {
 		super();
 		this.status = status;
 		this.dataHora = dataHora;
@@ -34,11 +34,11 @@ public class RespostaErro {
 		this.status = status;
 	}
 
-	public LocalDateTime getDataHora() {
+	public OffsetDateTime getDataHora() {
 		return dataHora;
 	}
 
-	public void setDataHora(LocalDateTime dataHora) {
+	public void setDataHora(OffsetDateTime dataHora) {
 		this.dataHora = dataHora;
 	}
 
