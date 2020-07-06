@@ -26,12 +26,12 @@ public class FuncionarioController {
 	private FuncionarioService funcionarioService;
 
 	@GetMapping
-	public @NotNull Iterable<Funcionario> getFuncionarios() {
-		return funcionarioService.getAllFuncionarios();
+	public @NotNull Iterable<Funcionario> listarTodosFuncionarios() {
+		return funcionarioService.listar();
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<Funcionario> getFuncionario(@PathVariable long id) {
+	public ResponseEntity<Funcionario> buscarFuncionario(@PathVariable long id) {
 		return ResponseEntity
 				.ok()
 				.body(funcionarioService.buscar(id));

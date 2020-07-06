@@ -7,7 +7,7 @@ import br.ufes.willcq.sgp.model.Funcionario;
 @Validated
 public interface FuncionarioService {
 	
-	public Iterable<Funcionario> getAllFuncionarios();
+	public Iterable<Funcionario> listar();
 	
 	public Funcionario buscar(long id);
 	

@@ -3,6 +3,7 @@ package br.ufes.willcq.sgp.model;
 import java.io.Serializable;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,46 +16,45 @@ import javax.validation.constraints.Size;
 @Table(name = "funcionarios")
 public class Funcionario implements Comparable<Funcionario>, Serializable {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -762959886428920284L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long idFuncionario;
+	@Column(name = "id_funcionario")
+	private long id;
 
 	@NotBlank(message = "O nome é necessário.")
 	@Basic(optional = false)
 	@Size(max = 250)
 	private String nome;
-	
+
 	@NotBlank(message = "O cargo é requerido.")
 	@Basic(optional = false)
 	@Size(max = 250)
 	private String cargo;
-	
+
 	private int idade;
-	
-	private int qtdFaltas;
-	
+
+	@Column(name = "qtd_faltas")
+	private int quantidadeFaltas;
+
 	public Funcionario() {
 	}
-	
+
 	public Funcionario(String nome, String cargo, int idade, int qtdFaltas) {
 		super();
 		this.nome = nome;
 		this.cargo = cargo;
 		this.idade = idade;
-		this.qtdFaltas = qtdFaltas;
+		this.quantidadeFaltas = qtdFaltas;
 	}
 
-	public Long getIdFuncionario() {
-		return idFuncionario;
+	public long getId() {
+		return id;
 	}
 
-	public void setIdFuncionario(Long idFuncionario) {
-		this.idFuncionario = idFuncionario;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getNome() {
@@ -81,17 +81,17 @@ public class Funcionario implements Comparable<Funcionario>, Serializable {
 		this.idade = idade;
 	}
 
-	public int getQtdFaltas() {
-		return qtdFaltas;
+	public int getQuantidadeFaltas() {
+		return quantidadeFaltas;
 	}
 
-	public void setQtdFaltas(int qtdFaltas) {
-		this.qtdFaltas = qtdFaltas;
+	public void setQuantidadeFaltas(int quantidadeFaltas) {
+		this.quantidadeFaltas = quantidadeFaltas;
 	}
 
 	@Override
 	public String toString() {
-		return this.nome + "," + this.cargo + "," + this.idade + "," + this.qtdFaltas;
+		return this.nome + "," + this.cargo + "," + this.idade + "," + this.quantidadeFaltas;
 	}
 
 	@Override
