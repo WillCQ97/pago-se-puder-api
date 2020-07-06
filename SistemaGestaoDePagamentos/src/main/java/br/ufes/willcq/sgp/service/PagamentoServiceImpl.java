@@ -16,35 +16,44 @@ public class PagamentoServiceImpl implements PagamentoService{
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
 	
+	private void verificarPagamentoCadastrado(Long id) {
+		if(!pagamentoRepository.existsById(id)) {
+			throw new ResourceNotFoundException("Pagamento de id " + id + " não encontrado.");
+		}
+	}
+	
 	@Override
-	public Iterable<Pagamento> getAllPagamentos() {
+	public Iterable<Pagamento> listar() {
 		return pagamentoRepository.findAll();
 	}
 
 	@Override
-	public Pagamento getPagamento(long id) {
-		return pagamentoRepository
-				.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundException("Pagamento de id " + id + " não encontrado."));
+	public Pagamento buscar(long id) {
+		this.verificarPagamentoCadastrado(id);
+		return pagamentoRepository.findById(id).get();
 	}
 
+	/* fix-me : verificar se é necessário fazer validações */
 	@Override
 	public Pagamento salvar(Pagamento pagamento) {
 		return pagamentoRepository.save(pagamento);
 	}
 	
-	/* fix-me */
+	/* fix-me : verificar se é necessário fazer validações */
 	@Override
 	public Pagamento atualizar(long id, Pagamento pagamento) {
-		// TODO Auto-generated method stub
-		return null;
+		this.verificarPagamentoCadastrado(id);
+		
+		pagamento.setId(id);
+		return pagamentoRepository.save(pagamento);
 	}
 	
-	/* fix-me */
+	/* fix-me : verificar se é necessário fazer validações */
 	@Override
-	public String remover(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public void remover(long id) {
+		this.verificarPagamentoCadastrado(id);
+		
+		pagamentoRepository.deleteById(id);
 	}
 
 }

@@ -7,13 +7,13 @@ import br.ufes.willcq.sgp.model.Pagamento;
 @Validated
 public interface PagamentoService {
 	
-	public Iterable<Pagamento> getAllPagamentos();
+	public Iterable<Pagamento> listar();
 	
-	public Pagamento getPagamento(long id);
+	public Pagamento buscar(long id);
 	
 	public Pagamento salvar(Pagamento pagamento);
 	
 	public Pagamento atualizar(long id, Pagamento pagamento);
 	
-	public String remover(long id);
+	public void remover(long id);
 }
