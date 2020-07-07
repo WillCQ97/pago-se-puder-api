@@ -36,7 +36,6 @@ CREATE TABLE detalhes (
 	id_pagamento BIGINT NOT NULL,
 	data DATE NOT NULL,
 	descricao VARCHAR(250) NOT NULL,
-	usuario VARCHAR(250) NOT NULL,
 	PRIMARY KEY (id_detalhe),
 	CONSTRAINT id_pagamento FOREIGN KEY (id_pagamento) REFERENCES pagamentos(id_pagamento)
 );
@@ -55,7 +54,7 @@ INSERT INTO pagamentos (data_vencimento, descricao, valor, id_solicitante) VALUE
 	('2020-05-30', 'Viajem técnica para configuração do servidor.', '50.00', 1),
 	('2020-06-30', 'Implementação de software no cliente.', '100.00', 1);
 	
-INSERT INTO detalhes (id_pagamento, data, descricao, usuario) VALUES
-(1, '2020-05-19', 'Pagamento aprovado.', 'Maria'),
-(2, '2020-05-19', 'Pagamento em análise', 'Maria'),
-(2, '2020-06-19', 'Pagamento aprovado', 'Maria');
+INSERT INTO detalhes (id_pagamento, data, descricao) VALUES
+(1, '2020-05-19', 'Pagamento aprovado.'),
+(2, '2020-05-19', 'Pagamento em análise'),
+(2, '2020-06-19', 'Pagamento aprovado');

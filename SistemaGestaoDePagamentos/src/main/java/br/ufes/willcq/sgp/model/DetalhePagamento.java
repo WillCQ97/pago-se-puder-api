@@ -17,42 +17,46 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 @Table(name = "detalhes")
 public class DetalhePagamento {
-	
+
 	@Column(name = "id_detalhe")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	private Long id;
-	
+	private long id;
+
 	@Column(name = "id_pagamento")
 	@NotNull
-	private Long codigoPagamento;
-	
+	private long codigoPagamento;
+
 	@NotNull(message = "A data é requerida.")
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date data;
-	
+
 	@NotBlank(message = "A descrição é requerida.")
 	private String descricao;
-	
-	@NotBlank(message = "O usuário deve ser informado.")
-	private String usuario;
-	
+
 	public DetalhePagamento() {
 	}
-	
-	public DetalhePagamento(Long codigoPagamento, Date data, String descricao, String usuario) {
+
+	public DetalhePagamento(long codigoPagamento, Date data, String descricao) {
 		super();
 		this.codigoPagamento = codigoPagamento;
 		this.data = data;
 		this.descricao = descricao;
-		this.usuario = usuario;
 	}
 
-	public Long getCodigoPagamento() {
+	public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public long getCodigoPagamento() {
 		return codigoPagamento;
 	}
 
-	public void setCodigoPagamento(Long codigoPagamento) {
+	public void setCodigoPagamento(long codigoPagamento) {
 		this.codigoPagamento = codigoPagamento;
 	}
 
@@ -72,18 +76,10 @@ public class DetalhePagamento {
 		this.descricao = descricao;
 	}
 
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
 	@Override
 	public String toString() {
 		SimpleDateFormat formatoData = new SimpleDateFormat("dd/MM/yyyy");
-		return codigoPagamento + "," + formatoData.format(this.data) + "," + descricao + "," + usuario;
+		return codigoPagamento + "," + formatoData.format(this.data) + "," + descricao + ".";
 	}
-	
+
 }

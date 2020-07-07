@@ -41,12 +41,12 @@ public class FuncionarioController {
 	public ResponseEntity<Funcionario> criarFuncionario(@Valid @RequestBody Funcionario funcionario) {
 		return ResponseEntity
 				.status(HttpStatus.CREATED)
-				.body(funcionarioService.salvar(funcionario));
+				.body(funcionarioService.adicionar(funcionario));
 	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<Funcionario> atualizarFuncionario(@PathVariable long id, 
-			@RequestBody Funcionario funcionario) {
+			@Valid @RequestBody Funcionario funcionario) {
 		return ResponseEntity.ok(funcionarioService.atualizar(id, funcionario));
 	}
 	

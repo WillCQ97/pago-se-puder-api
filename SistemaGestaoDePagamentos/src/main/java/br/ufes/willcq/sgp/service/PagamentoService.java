@@ -11,7 +11,7 @@ public interface PagamentoService {
 	
 	public Pagamento buscar(long id);
 	
-	public Pagamento salvar(Pagamento pagamento);
+	public Pagamento adicionar(Pagamento pagamento);
 	
 	public Pagamento atualizar(long id, Pagamento pagamento);
 	

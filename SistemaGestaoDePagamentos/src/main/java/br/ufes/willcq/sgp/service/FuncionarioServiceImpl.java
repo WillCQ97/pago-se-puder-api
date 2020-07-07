@@ -22,6 +22,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	private PagamentoRepository pagamentoRepository;
 
 	private void verificarFuncionarioCadastrado(long id) {
+		if (id <= 0) {
+			throw new NegocioException("O id informado para o funcionário deve ser maior que zero.");
+		}
 		if (!funcionarioRepository.existsById(id)) {
 			throw new ResourceNotFoundException("Funcionário com id " + id + " não encontrado!");
 		}
@@ -29,20 +32,20 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
 	private void validarIdade(int idade) {
 		if (idade == 0) {
-			throw new NegocioException("A idade precisa ser informada e diferente de 0.");
+			throw new NegocioException("A idade precisa ser informada e diferente de zero.");
 		}
 	}
 
 	private void verificarPagamentosCadastrados(long idFuncionario) {
 
-		String msg = "Há pagamentos cadastrados para este funcionário.";
+		String msg = "Há pagamentos cadastrados para este funcionário. ";
 		msg += "Ele não pode ser removido!";
 
 		for (Pagamento p : pagamentoRepository.findAll()) {
 			if (p.getSolicitante().getId() == idFuncionario) {
 				throw new NegocioException(msg);
 			}
-			if (p.getAprovador() != null && p.getAprovador().getId() != idFuncionario) {
+			if (p.getAprovador() != null && p.getAprovador().getId() == idFuncionario) {
 				throw new NegocioException(msg);
 			}
 		}
@@ -60,7 +63,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	}
 
 	@Override
-	public Funcionario salvar(Funcionario funcionario) {
+	public Funcionario adicionar(Funcionario funcionario) {
 		this.validarIdade(funcionario.getIdade());
 		return funcionarioRepository.save(funcionario);
 	}

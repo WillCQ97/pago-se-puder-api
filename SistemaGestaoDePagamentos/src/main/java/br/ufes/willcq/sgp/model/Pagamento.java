@@ -62,7 +62,6 @@ public class Pagamento {
 	private List<DetalhePagamento> detalhes;
 
 	public Pagamento() {
-		detalhes = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -127,6 +126,20 @@ public class Pagamento {
 
 	public void setDetalhes(List<DetalhePagamento> detalhes) {
 		this.detalhes = detalhes;
+	}
+
+	public void addDetalhe(DetalhePagamento detalhe) {
+		if (this.detalhes == null) {
+			this.detalhes = new ArrayList<>();
+		}
+		this.detalhes.add(detalhe);
+	}
+
+	public void addDetalhes(List<DetalhePagamento> detalhes) {
+		if (this.detalhes == null) {
+			this.detalhes = new ArrayList<>();
+		}
+		this.detalhes.addAll(detalhes);
 	}
 
 }
