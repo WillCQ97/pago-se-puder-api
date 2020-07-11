@@ -1,8 +1,14 @@
 package br.ufes.willcq.sgp.service;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.ufes.willcq.sgp.exception.NegocioException;
 import br.ufes.willcq.sgp.exception.ResourceNotFoundException;
@@ -89,5 +95,47 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 		this.verificarPagamentosCadastrados(id);
 		funcionarioRepository.deleteById(id);
 	}
-
+	
+	/*
+	 * Leitura de informações dos dados de um arquivo csv
+	 */
+	@Override
+	public List<Funcionario> importar(MultipartFile arquivoCSV) {
+		
+		List<Funcionario> funcionarios = new ArrayList<>();
+		List<Exception> erros = new ArrayList<>();
+		
+		try {
+			Scanner scanFile = new Scanner(arquivoCSV.getInputStream());
+			String linha = scanFile.nextLine();
+			
+			while(scanFile.hasNext()) {
+				linha = scanFile.nextLine();
+				Scanner scanLine = new Scanner(linha);
+				scanLine.useDelimiter(",");
+				
+				while(scanLine.hasNext()) {
+					String nome = scanLine.next().replace("\"", "");
+                    String cargo = scanLine.next().replace("\"", "");
+                    int idade = Integer.parseInt(scanLine.next());
+                    int nFaltas = Integer.parseInt(scanLine.next());
+                    
+                    Funcionario f = new Funcionario(nome, cargo, idade, nFaltas);
+                    funcionarios.add(f);
+				}
+				scanLine.close();
+			}
+			scanFile.close();
+			
+		}catch(IOException | NumberFormatException ex) {
+			erros.add(ex);
+		}
+		
+		if(funcionarios.size() == 0) {
+			throw new NegocioException("Nenhum dado de funcionário foi importado. Verifique o arquivo escolhido.");
+		}
+		
+		funcionarioRepository.saveAll(funcionarios);
+		return funcionarios;
+	}
 }

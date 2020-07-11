@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import br.ufes.willcq.sgp.model.Funcionario;
 import br.ufes.willcq.sgp.service.FuncionarioService;
@@ -24,7 +26,7 @@ public class FuncionarioController {
 	
 	@Autowired
 	private FuncionarioService funcionarioService;
-
+	
 	@GetMapping
 	public @NotNull Iterable<Funcionario> listarTodosFuncionarios() {
 		return funcionarioService.listar();
@@ -56,4 +58,8 @@ public class FuncionarioController {
 		return ResponseEntity.ok().build();
 	}
 	
+	@PostMapping("/importacao")
+	public Iterable<Funcionario> upload(@RequestParam MultipartFile arquivo) {
+		return funcionarioService.importar(arquivo);
+	}
 }
