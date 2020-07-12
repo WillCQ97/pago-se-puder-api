@@ -35,33 +35,35 @@ public class PagamentoController {
 
 	@Autowired
 	private ModelMapper modelMapper;
-
-	private Iterable<PagamentoRespostaDTO> toCollectionPagamentoOutputModel(Iterable<Pagamento> pagamentos){
-		ArrayList<PagamentoRespostaDTO> pagamentosModel = new ArrayList<>();
+	
+	private Iterable<PagamentoRespostaDTO> toCollectionPagamentoRespostaDTO(Iterable<Pagamento> pagamentos){
+		ArrayList<PagamentoRespostaDTO> pagamentosDTO = new ArrayList<>();
 		
 		for(Pagamento pagamento : pagamentos) {
-			pagamentosModel.add(this.toPagamentoOutputModel(pagamento));
+			pagamentosDTO.add(this.toPagamentoRespostaDTO(pagamento));
 		}
-		return pagamentosModel;
-	}
-
-	private PagamentoRespostaDTO toPagamentoOutputModel(Pagamento pagamento) {
-		return modelMapper.map(pagamento, PagamentoRespostaDTO.class);
+		return pagamentosDTO;
 	}
 	
+	private PagamentoRespostaDTO toPagamentoRespostaDTO(Pagamento pagamento) {
+		return PagamentoRespostaDTO.paraPagamentoRespostaDTO(pagamento);
+	}
+
+	//remover este método e alterar pagamentoinputmodel
 	private Pagamento toPagamento(PagamentoInputModel input) {
 		return modelMapper.map(input, Pagamento.class);
 	}
-
+	/*
+	*/
 	@GetMapping
 	public Iterable<PagamentoRespostaDTO> listarPagamentos() {
-		return this.toCollectionPagamentoOutputModel(pagamentoService.listar());
+		return this.toCollectionPagamentoRespostaDTO(pagamentoService.listar());
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<PagamentoRespostaDTO> buscarPagamento(@PathVariable long id) {
 		Pagamento pagamento = pagamentoService.buscar(id);
-		return ResponseEntity.ok(this.toPagamentoOutputModel(pagamento));
+		return ResponseEntity.ok(this.toPagamentoRespostaDTO(pagamento));
 	}
 
 	@PostMapping
@@ -71,7 +73,7 @@ public class PagamentoController {
 		Funcionario solicitante = funcionarioService.buscar(pagamento.getSolicitante().getId());
 		pagamento.setSolicitante(solicitante);
 		
-		PagamentoRespostaDTO output = this.toPagamentoOutputModel(pagamentoService.adicionar(pagamento));
+		PagamentoRespostaDTO output = this.toPagamentoRespostaDTO(pagamentoService.adicionar(pagamento));
 		return ResponseEntity.status(HttpStatus.CREATED).body(output);
 	}
 
@@ -82,7 +84,7 @@ public class PagamentoController {
 		Funcionario solicitante = funcionarioService.buscar(pagamento.getSolicitante().getId());
 		pagamento.setSolicitante(solicitante);
 		
-		PagamentoRespostaDTO output = this.toPagamentoOutputModel(pagamentoService.atualizar(id, pagamento));
+		PagamentoRespostaDTO output = this.toPagamentoRespostaDTO(pagamentoService.atualizar(id, pagamento));
 		return ResponseEntity.ok(output);
 	}
 

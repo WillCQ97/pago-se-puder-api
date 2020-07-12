@@ -1,5 +1,6 @@
 package br.ufes.willcq.sgp.api.dto;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -7,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import br.ufes.willcq.sgp.model.DetalhePagamento;
 import br.ufes.willcq.sgp.model.Pagamento;
 
-//utilizar anotações para substituir código
 @JsonInclude(Include.NON_EMPTY)
 public class PagamentoRespostaDTO {
 
@@ -26,90 +27,78 @@ public class PagamentoRespostaDTO {
 	private FuncionarioPagamentoDTO solicitante;
 	private FuncionarioPagamentoDTO aprovador;
 
-	private List<DetalhePagamentoDTO> detalhes;
-	
-	public PagamentoRespostaDTO() {
-	}
+	private List<DetalhePagamentoRespostaDTO> detalhes;
 
-	public PagamentoRespostaDTO(Long id, String descricao, double valor, Date dataVencimento, Date dataAprovacao,
-			FuncionarioPagamentoDTO solicitante, FuncionarioPagamentoDTO aprovador,
-			List<DetalhePagamentoDTO> detalhes) {
+	private PagamentoRespostaDTO(Long id, String descricao, double valor, Date dataVencimento, Date dataAprovacao) {
 		this.id = id;
 		this.descricao = descricao;
 		this.valor = valor;
 		this.dataVencimento = dataVencimento;
 		this.dataAprovacao = dataAprovacao;
-		this.solicitante = solicitante;
-		this.aprovador = aprovador;
-		this.detalhes = detalhes;
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
-	}
-
 	public String getDescricao() {
 		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
 	}
 
 	public double getValor() {
 		return valor;
 	}
 
-	public void setValor(double valor) {
-		this.valor = valor;
-	}
-
 	public Date getDataVencimento() {
 		return dataVencimento;
-	}
-
-	public void setDataVencimento(Date dataVencimento) {
-		this.dataVencimento = dataVencimento;
 	}
 
 	public Date getDataAprovacao() {
 		return dataAprovacao;
 	}
 
-	public void setDataAprovacao(Date dataAprovacao) {
-		this.dataAprovacao = dataAprovacao;
-	}
-
 	public FuncionarioPagamentoDTO getSolicitante() {
 		return solicitante;
 	}
 
-	public void setSolicitante(FuncionarioPagamentoDTO solicitante) {
-		this.solicitante = solicitante;
+	private void setSolicitante(FuncionarioPagamentoDTO funcionario) {
+		this.solicitante = funcionario;
 	}
 
 	public FuncionarioPagamentoDTO getAprovador() {
 		return aprovador;
 	}
 
-	public void setAprovador(FuncionarioPagamentoDTO aprovador) {
-		this.aprovador = aprovador;
+	private void setAprovador(FuncionarioPagamentoDTO funcionario) {
+		this.solicitante = funcionario;
 	}
 
-	public List<DetalhePagamentoDTO> getDetalhes() {
+	public List<DetalhePagamentoRespostaDTO> getDetalhes() {
 		return detalhes;
 	}
 
-	public void setDetalhes(List<DetalhePagamentoDTO> detalhes) {
-		this.detalhes = detalhes;
+	private void addDetalhe(DetalhePagamentoRespostaDTO detalhe) {
+		if (this.detalhes == null) {
+			this.detalhes = new ArrayList<>();
+		}
+		this.detalhes.add(detalhe);
 	}
-	
-	//método que retorna um PagamentoRespostaDTO ao receber um objeto de pagamento
-	public PagamentoRespostaDTO paraPagamentoRespostaDTO(Pagamento pagamento) {
-		return new PagamentoRespostaDTO();
+
+	public static PagamentoRespostaDTO paraPagamentoRespostaDTO(Pagamento pagamento) {
+		PagamentoRespostaDTO resposta = new PagamentoRespostaDTO(pagamento.getId(), pagamento.getDescricao(),
+				pagamento.getValor(), pagamento.getDataVencimento(), pagamento.getDataAprovacao());
+
+		// converter os funcionarios
+		resposta.setSolicitante(FuncionarioPagamentoDTO.paraFuncionarioPagamentoDTO(pagamento.getSolicitante()));
+		if (pagamento.getAprovador() != null) {
+			resposta.setAprovador(FuncionarioPagamentoDTO.paraFuncionarioPagamentoDTO(pagamento.getAprovador()));
+		}
+		
+		// converter os detalhes
+		for (DetalhePagamento detalhe : pagamento.getDetalhes()) {
+			resposta.addDetalhe(DetalhePagamentoRespostaDTO.paraDetalhePagamentoRespostaDTO(detalhe));
+		}
+
+		return resposta;
 	}
 }

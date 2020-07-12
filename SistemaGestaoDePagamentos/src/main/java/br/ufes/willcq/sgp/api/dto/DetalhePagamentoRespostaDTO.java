@@ -8,7 +8,9 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class DetalhePagamentoDTO {
+import br.ufes.willcq.sgp.model.DetalhePagamento;
+
+public class DetalhePagamentoRespostaDTO {
 
 	@Id
 	@NotNull
@@ -19,29 +21,26 @@ public class DetalhePagamentoDTO {
 
 	@NotBlank
 	private String descricao;
+	
+	private DetalhePagamentoRespostaDTO(Long id, Date data, String descricao) {
+		this.id = id;
+		this.data = data;
+		this.descricao = descricao;
+	}
 
 	public Long getId() {
 		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Date getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
-		this.data = data;
-	}
-
 	public String getDescricao() {
 		return descricao;
 	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	
+	public static DetalhePagamentoRespostaDTO paraDetalhePagamentoRespostaDTO(DetalhePagamento detalhe) {
+		return new DetalhePagamentoRespostaDTO(detalhe.getId(), detalhe.getData(), detalhe.getDescricao());
 	}
-
 }

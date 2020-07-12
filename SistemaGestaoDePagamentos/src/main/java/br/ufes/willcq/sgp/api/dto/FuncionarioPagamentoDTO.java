@@ -3,28 +3,30 @@ package br.ufes.willcq.sgp.api.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import br.ufes.willcq.sgp.model.Funcionario;
+
 public class FuncionarioPagamentoDTO {
 	
 	@NotNull
-	private int id;
+	private Long id;
 	
 	@NotBlank
 	private String nome;
-
-	public int getId() {
-		return id;
+	
+	private FuncionarioPagamentoDTO(@NotNull Long id, @NotBlank String nome) {
+		this.id = id;
+		this.nome = nome;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public Long getId() {
+		return id;
 	}
 
 	public String getNome() {
 		return nome;
 	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+	
+	public static FuncionarioPagamentoDTO paraFuncionarioPagamentoDTO(Funcionario funcionario) {
+		return new FuncionarioPagamentoDTO(funcionario.getId(), funcionario.getNome());
 	}
-
 }
