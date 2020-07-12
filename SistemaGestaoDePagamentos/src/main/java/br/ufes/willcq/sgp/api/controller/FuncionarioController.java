@@ -1,4 +1,4 @@
-package br.ufes.willcq.sgp.controller;
+package br.ufes.willcq.sgp.api.controller;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -55,11 +55,12 @@ public class FuncionarioController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Void> removerFuncionario(@PathVariable long id) {
 		funcionarioService.remover(id);
-		return ResponseEntity.ok().build();
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 	
+	//fix-me: melhorar implementação
 	@PostMapping("/importacao")
-	public Iterable<Funcionario> upload(@RequestParam MultipartFile arquivo) {
+	public Iterable<Funcionario> importarDadosFuncionarioDeArquivo(@RequestParam MultipartFile arquivo) {
 		return funcionarioService.importar(arquivo);
 	}
 }

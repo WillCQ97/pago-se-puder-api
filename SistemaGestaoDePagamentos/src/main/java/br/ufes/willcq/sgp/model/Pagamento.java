@@ -18,13 +18,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 @Entity
 @Table(name = "pagamentos")
-@JsonInclude(Include.NON_EMPTY)
 public class Pagamento {
 
 	@Column(name = "id_pagamento")
@@ -33,7 +28,6 @@ public class Pagamento {
 	private Long id;
 
 	@Basic(optional = false)
-	@JsonFormat(pattern = "dd/MM/yyyy")
 	@NotNull(message = "A data de vencimento é necesária.")
 	private Date dataVencimento;
 
@@ -45,7 +39,6 @@ public class Pagamento {
 	@NotNull(message = "O valor é necessário.")
 	private double valor;
 
-	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date dataAprovacao;
 
 	@JoinColumn(name = "id_solicitante")

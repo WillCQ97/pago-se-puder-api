@@ -97,7 +97,8 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	}
 	
 	/*
-	 * Leitura de informações dos dados de um arquivo csv
+	 * Leitura de informações dos dados de um arquivo csv,
+	 * instancia os funcionarios e os salva
 	 */
 	@Override
 	public List<Funcionario> importar(MultipartFile arquivoCSV) {

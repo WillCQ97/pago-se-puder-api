@@ -12,8 +12,6 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 @Entity
 @Table(name = "detalhes")
 public class DetalhePagamento {
@@ -28,7 +26,6 @@ public class DetalhePagamento {
 	private long codigoPagamento;
 
 	@NotNull(message = "A data é requerida.")
-	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date data;
 
 	@NotBlank(message = "A descrição é requerida.")
