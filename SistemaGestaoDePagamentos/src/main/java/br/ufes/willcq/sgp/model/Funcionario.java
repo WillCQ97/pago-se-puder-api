@@ -21,7 +21,7 @@ public class Funcionario implements Comparable<Funcionario>, Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id_funcionario")
-	private long id;
+	private Long id;
 
 	@NotBlank(message = "O nome é necessário.")
 	@Basic(optional = false)
@@ -49,11 +49,11 @@ public class Funcionario implements Comparable<Funcionario>, Serializable {
 		this.quantidadeFaltas = qtdFaltas;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

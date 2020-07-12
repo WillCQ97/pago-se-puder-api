@@ -7,7 +7,9 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class PagamentoInputModel {
+import br.ufes.willcq.sgp.model.Pagamento;
+
+public class PagamentoDTO {
 
 	@NotBlank(message = "A descrição deve ser informada.")
 	private String descricao;
@@ -20,7 +22,7 @@ public class PagamentoInputModel {
 	private Date dataVencimento;
 
 	@NotNull(message = "O código do funcionário solicitante deve ser informado.")
-	private FuncionarioIdInput solicitante;
+	private FuncionarioIdDTO solicitante;
 
 	public String getDescricao() {
 		return descricao;
@@ -46,12 +48,16 @@ public class PagamentoInputModel {
 		this.dataVencimento = dataVencimento;
 	}
 
-	public FuncionarioIdInput getSolicitante() {
+	public FuncionarioIdDTO getSolicitante() {
 		return solicitante;
 	}
 
-	public void setSolicitante(FuncionarioIdInput solicitante) {
+	public void setSolicitante(FuncionarioIdDTO solicitante) {
 		this.solicitante = solicitante;
 	}
-
+	
+	public Pagamento transformarParaPagamento() {
+		return new Pagamento(this.dataVencimento, this.descricao, this.valor, 
+				solicitante.transforarParaFuncionario());
+	}
 }

@@ -3,7 +3,6 @@ package br.ufes.willcq.sgp.api.controller;
 import java.util.ArrayList;
 import javax.validation.Valid;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.ufes.willcq.sgp.api.dto.PagamentoInputModel;
+import br.ufes.willcq.sgp.api.dto.PagamentoDTO;
 import br.ufes.willcq.sgp.api.dto.PagamentoRespostaDTO;
 import br.ufes.willcq.sgp.model.Funcionario;
 import br.ufes.willcq.sgp.model.Pagamento;
@@ -33,59 +32,51 @@ public class PagamentoController {
 	@Autowired
 	private FuncionarioService funcionarioService;
 
-	@Autowired
-	private ModelMapper modelMapper;
-	
-	private Iterable<PagamentoRespostaDTO> toCollectionPagamentoRespostaDTO(Iterable<Pagamento> pagamentos){
+	private Iterable<PagamentoRespostaDTO> paraCollectionPagamentoRespostaDTO(Iterable<Pagamento> pagamentos){
 		ArrayList<PagamentoRespostaDTO> pagamentosDTO = new ArrayList<>();
 		
 		for(Pagamento pagamento : pagamentos) {
-			pagamentosDTO.add(this.toPagamentoRespostaDTO(pagamento));
+			pagamentosDTO.add(this.paraPagamentoRespostaDTO(pagamento));
 		}
 		return pagamentosDTO;
 	}
 	
-	private PagamentoRespostaDTO toPagamentoRespostaDTO(Pagamento pagamento) {
+	private PagamentoRespostaDTO paraPagamentoRespostaDTO(Pagamento pagamento) {
 		return PagamentoRespostaDTO.paraPagamentoRespostaDTO(pagamento);
 	}
 
-	//remover este método e alterar pagamentoinputmodel
-	private Pagamento toPagamento(PagamentoInputModel input) {
-		return modelMapper.map(input, Pagamento.class);
-	}
-	/*
-	*/
 	@GetMapping
 	public Iterable<PagamentoRespostaDTO> listarPagamentos() {
-		return this.toCollectionPagamentoRespostaDTO(pagamentoService.listar());
+		return this.paraCollectionPagamentoRespostaDTO(pagamentoService.listar());
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<PagamentoRespostaDTO> buscarPagamento(@PathVariable long id) {
 		Pagamento pagamento = pagamentoService.buscar(id);
-		return ResponseEntity.ok(this.toPagamentoRespostaDTO(pagamento));
+		return ResponseEntity.ok(this.paraPagamentoRespostaDTO(pagamento));
 	}
 
 	@PostMapping
-	public ResponseEntity<PagamentoRespostaDTO> criarPagamento(@Valid @RequestBody PagamentoInputModel input) {
+	public ResponseEntity<PagamentoRespostaDTO> criarPagamento(@Valid @RequestBody PagamentoDTO pagamentoDto) {
 		
-		Pagamento pagamento = this.toPagamento(input);
+		Pagamento pagamento = pagamentoDto.transformarParaPagamento();
 		Funcionario solicitante = funcionarioService.buscar(pagamento.getSolicitante().getId());
 		pagamento.setSolicitante(solicitante);
 		
-		PagamentoRespostaDTO output = this.toPagamentoRespostaDTO(pagamentoService.adicionar(pagamento));
-		return ResponseEntity.status(HttpStatus.CREATED).body(output);
+		PagamentoRespostaDTO resposta = this.paraPagamentoRespostaDTO(pagamentoService.adicionar(pagamento));
+		return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
 	}
 
-	@PutMapping("/{id}") //pensar em uma solução aqui
+	@PutMapping("/{id}")
 	public ResponseEntity<PagamentoRespostaDTO> atualizarPagamento(@PathVariable long id,
-			@Valid @RequestBody Pagamento pagamento) {
-
+			@Valid @RequestBody PagamentoDTO pagamentoDto) {
+		
+		Pagamento pagamento = pagamentoDto.transformarParaPagamento();
 		Funcionario solicitante = funcionarioService.buscar(pagamento.getSolicitante().getId());
 		pagamento.setSolicitante(solicitante);
 		
-		PagamentoRespostaDTO output = this.toPagamentoRespostaDTO(pagamentoService.atualizar(id, pagamento));
-		return ResponseEntity.ok(output);
+		PagamentoRespostaDTO resposta = this.paraPagamentoRespostaDTO(pagamentoService.atualizar(id, pagamento));
+		return ResponseEntity.ok(resposta);
 	}
 
 	@DeleteMapping("/{id}")

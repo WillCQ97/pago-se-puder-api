@@ -57,6 +57,13 @@ public class Pagamento {
 	public Pagamento() {
 	}
 
+	public Pagamento(Date dataVencimento, String descricao, double valor, Funcionario solicitante) {
+		this.dataVencimento = dataVencimento;
+		this.descricao = descricao;
+		this.valor = valor;
+		this.solicitante = solicitante;
+	}
+
 	public Long getId() {
 		return id;
 	}
