@@ -27,7 +27,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
 
-	private void verificarFuncionarioCadastrado(long id) {
+	private void verificarFuncionarioCadastrado(Long id) {
 		if (id <= 0) {
 			throw new NegocioException("O id informado para o funcionário deve ser maior que zero.");
 		}
@@ -42,7 +42,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 		}
 	}
 
-	private void verificarPagamentosCadastrados(long idFuncionario) {
+	private void verificarPagamentosCadastrados(Long idFuncionario) {
 
 		String msg = "Há pagamentos cadastrados para este funcionário. ";
 		msg += "Ele não pode ser removido!";
@@ -63,7 +63,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	}
 
 	@Override
-	public Funcionario buscar(long id) {
+	public Funcionario buscar(Long id) {
 		this.verificarFuncionarioCadastrado(id);
 		return funcionarioRepository.findById(id).get();
 	}
@@ -78,7 +78,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 * A atualização deve receber os dados de todos os campos
 	 */
 	@Override
-	public Funcionario atualizar(long id, Funcionario funcionario) {
+	public Funcionario atualizar(Long id, Funcionario funcionario) {
 		this.verificarFuncionarioCadastrado(id);
 		this.validarIdade(funcionario.getIdade());
 
@@ -90,7 +90,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 	 * O funcionário só pode ser removido se não houver pagamentos associados à ele
 	 */
 	@Override
-	public void remover(long id) {
+	public void remover(Long id) {
 		this.verificarFuncionarioCadastrado(id);
 		this.verificarPagamentosCadastrados(id);
 		funcionarioRepository.deleteById(id);

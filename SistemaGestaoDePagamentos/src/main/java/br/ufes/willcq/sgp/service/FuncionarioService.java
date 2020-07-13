@@ -12,14 +12,14 @@ public interface FuncionarioService {
 
 	public Iterable<Funcionario> listar();
 
-	public Funcionario buscar(long id);
+	public Funcionario buscar(Long id);
 
 	public Funcionario adicionar(Funcionario funcionario);
 
-	public Funcionario atualizar(long id, Funcionario funcionario);
+	public Funcionario atualizar(Long id, Funcionario funcionario);
 	
 	public List<Funcionario> importar(MultipartFile arquivoCSV);
 
-	public void remover(long id);
+	public void remover(Long id);
 
 }

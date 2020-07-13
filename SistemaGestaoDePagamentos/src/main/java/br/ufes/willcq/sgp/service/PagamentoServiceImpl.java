@@ -24,7 +24,7 @@ public class PagamentoServiceImpl implements PagamentoService {
 	@Autowired
 	private DetalhePagamentoRepository detalhesPagamentoRepository;
 
-	private void verificarPagamentoCadastrado(long id) {
+	private void verificarPagamentoCadastrado(Long id) {
 		if (!pagamentoRepository.existsById(id)) {
 			throw new ResourceNotFoundException("Pagamento de id " + id + " não encontrado.");
 		}
@@ -36,7 +36,7 @@ public class PagamentoServiceImpl implements PagamentoService {
 		}
 	}
 
-	private void verificarPagamentoAprovado(long id) {
+	private void verificarPagamentoAprovado(Long id) {
 		Pagamento pagamento = pagamentoRepository.findById(id).get();
 		if (pagamento.getAprovador() != null) {
 			throw new NegocioException("Este pagamento já foi aprovado. Suas informações não podem ser alteradas.");
@@ -49,7 +49,7 @@ public class PagamentoServiceImpl implements PagamentoService {
 	}
 
 	@Override
-	public Pagamento buscar(long id) {
+	public Pagamento buscar(Long id) {
 		this.verificarPagamentoCadastrado(id);
 		return pagamentoRepository.findById(id).get();
 	}
@@ -68,7 +68,7 @@ public class PagamentoServiceImpl implements PagamentoService {
 	}
 
 	@Override
-	public Pagamento atualizar(long id, Pagamento pagamento) {
+	public Pagamento atualizar(Long id, Pagamento pagamento) {
 		this.verificarPagamentoCadastrado(id);
 		this.validarValorPagamento(pagamento.getValor());
 		this.verificarPagamentoAprovado(id);
@@ -82,13 +82,27 @@ public class PagamentoServiceImpl implements PagamentoService {
 	}
 
 	@Override
-	public void remover(long id) {
+	public void remover(Long id) {
 		this.verificarPagamentoCadastrado(id);
 		this.verificarPagamentoAprovado(id);
 		
 		detalhesPagamentoRepository.deleteByCodigoPagamento(id);
 		
 		pagamentoRepository.deleteById(id);
+	}
+	
+	
+	public DetalhePagamento adicionarDetalhePagamento(Long idPagamento, DetalhePagamento detalhe) {
+		this.verificarPagamentoCadastrado(idPagamento);
+		this.verificarPagamentoAprovado(idPagamento);
+		
+		Pagamento pagamento = pagamentoRepository.findById(idPagamento).get();
+		
+		detalhe.setCodigoPagamento(idPagamento);
+		detalhesPagamentoRepository.save(detalhe);
+		pagamento.addDetalhe(detalhe);
+		
+		return detalhe;
 	}
 
 }

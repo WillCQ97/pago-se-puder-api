@@ -19,11 +19,11 @@ public class DetalhePagamento {
 	@Column(name = "id_detalhe")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
-	private long id;
+	private Long id;
 
 	@Column(name = "id_pagamento")
 	@NotNull
-	private long codigoPagamento;
+	private Long codigoPagamento;
 
 	@NotNull(message = "A data é requerida.")
 	private Date data;
@@ -34,26 +34,30 @@ public class DetalhePagamento {
 	public DetalhePagamento() {
 	}
 
-	public DetalhePagamento(long codigoPagamento, Date data, String descricao) {
+	public DetalhePagamento(String descricao) {
+		this.descricao = descricao;
+	}
+
+	public DetalhePagamento(Long codigoPagamento, Date data, String descricao) {
 		super();
 		this.codigoPagamento = codigoPagamento;
 		this.data = data;
 		this.descricao = descricao;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public long getCodigoPagamento() {
+	public Long getCodigoPagamento() {
 		return codigoPagamento;
 	}
 
-	public void setCodigoPagamento(long codigoPagamento) {
+	public void setCodigoPagamento(Long codigoPagamento) {
 		this.codigoPagamento = codigoPagamento;
 	}
 

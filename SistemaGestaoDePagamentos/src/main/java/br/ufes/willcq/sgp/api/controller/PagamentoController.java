@@ -32,15 +32,15 @@ public class PagamentoController {
 	@Autowired
 	private FuncionarioService funcionarioService;
 
-	private Iterable<PagamentoRespostaDTO> paraCollectionPagamentoRespostaDTO(Iterable<Pagamento> pagamentos){
+	private Iterable<PagamentoRespostaDTO> paraCollectionPagamentoRespostaDTO(Iterable<Pagamento> pagamentos) {
 		ArrayList<PagamentoRespostaDTO> pagamentosDTO = new ArrayList<>();
-		
-		for(Pagamento pagamento : pagamentos) {
+
+		for (Pagamento pagamento : pagamentos) {
 			pagamentosDTO.add(this.paraPagamentoRespostaDTO(pagamento));
 		}
 		return pagamentosDTO;
 	}
-	
+
 	private PagamentoRespostaDTO paraPagamentoRespostaDTO(Pagamento pagamento) {
 		return PagamentoRespostaDTO.paraPagamentoRespostaDTO(pagamento);
 	}
@@ -51,49 +51,39 @@ public class PagamentoController {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<PagamentoRespostaDTO> buscarPagamento(@PathVariable long id) {
+	public ResponseEntity<PagamentoRespostaDTO> buscarPagamento(@PathVariable Long id) {
 		Pagamento pagamento = pagamentoService.buscar(id);
 		return ResponseEntity.ok(this.paraPagamentoRespostaDTO(pagamento));
 	}
 
 	@PostMapping
 	public ResponseEntity<PagamentoRespostaDTO> criarPagamento(@Valid @RequestBody PagamentoDTO pagamentoDto) {
-		
+
 		Pagamento pagamento = pagamentoDto.transformarParaPagamento();
 		Funcionario solicitante = funcionarioService.buscar(pagamento.getSolicitante().getId());
 		pagamento.setSolicitante(solicitante);
-		
+
 		PagamentoRespostaDTO resposta = this.paraPagamentoRespostaDTO(pagamentoService.adicionar(pagamento));
 		return ResponseEntity.status(HttpStatus.CREATED).body(resposta);
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<PagamentoRespostaDTO> atualizarPagamento(@PathVariable long id,
+	public ResponseEntity<PagamentoRespostaDTO> atualizarPagamento(@PathVariable Long id,
 			@Valid @RequestBody PagamentoDTO pagamentoDto) {
-		
+
 		Pagamento pagamento = pagamentoDto.transformarParaPagamento();
 		Funcionario solicitante = funcionarioService.buscar(pagamento.getSolicitante().getId());
 		pagamento.setSolicitante(solicitante);
-		
+
 		PagamentoRespostaDTO resposta = this.paraPagamentoRespostaDTO(pagamentoService.atualizar(id, pagamento));
 		return ResponseEntity.ok(resposta);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> removerPagamento(@PathVariable long id) {
+	public ResponseEntity<Void> removerPagamento(@PathVariable Long id) {
 		pagamentoService.remover(id);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
-	/*
-	 * @PutMapping("/{id}/detalhes/") public ResponseEntity<Pagamento>
-	 * adicionarDetalhePagamento(@PathVariable long id,
-	 * 
-	 * @Valid @RequestBody DetalhePagamento detalhe){
-	 * 
-	 * Pagamento pagamento = pagamentoService.buscar(id);
-	 * pagamento.addDetalhe(detalhe);
-	 * 
-	 * return ResponseEntity.ok(pagamentoService.atualizar(id, pagamento)); }
-	 */
+	// MÉTODO PARA APROVAR UM PAGAMENTO
 }

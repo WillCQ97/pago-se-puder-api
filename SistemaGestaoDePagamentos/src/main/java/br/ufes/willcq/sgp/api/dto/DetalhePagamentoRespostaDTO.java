@@ -3,9 +3,6 @@ package br.ufes.willcq.sgp.api.dto;
 import java.util.Date;
 
 import javax.persistence.Id;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import br.ufes.willcq.sgp.model.DetalhePagamento;
@@ -13,13 +10,11 @@ import br.ufes.willcq.sgp.model.DetalhePagamento;
 public class DetalhePagamentoRespostaDTO {
 
 	@Id
-	@NotNull
 	private Long id;
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private Date data;
 
-	@NotBlank
 	private String descricao;
 	
 	private DetalhePagamentoRespostaDTO(Long id, Date data, String descricao) {
