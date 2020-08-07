@@ -1,5 +1,5 @@
-# pago-se-puder
-Sistema de gestão de pagamentos com Spring Boot + Angular
+# pago-se-puder-backend
+Bakend do sistema de gestão de pagamentos com Spring Boot.
 
 # Especificação
 
