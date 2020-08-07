@@ -1,5 +1,5 @@
 # pago-se-puder-backend
-Bakend do sistema de gestão de pagamentos com Spring Boot.
+Backend do sistema de gestão de pagamentos com Spring Boot.
 
 # Especificação
 
